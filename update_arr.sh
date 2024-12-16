@@ -1,21 +1,14 @@
 #!/bin/bash
 
-#update sonarr
-cd /home/docker/sonarr
-docker compose down sonarr
-docker compose pull sonarr
-docker compose up -d
+containers=( "sonarr" "radarr" "prowlarr" )
 
-#update radarr
-cd /home/docker/radarr
-docker compose down radarr
-docker compose pull radarr
-docker compose up -d
-
-#update prowlarr
-cd /home/docker/prowlarr
-docker compose down prowlarr
-docker compose pull prowlarr
-docker compose up -d
+for container in "${containers[@]}"
+do
+	echo "Updating $container"
+	cd /home/docker/$container
+	docker compose down $container
+	docker compose pull $container
+	docker compose up -d
+done
 
 echo "Arr Stack update complete!"
